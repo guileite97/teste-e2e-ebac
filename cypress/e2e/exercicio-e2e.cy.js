@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import paginaProdutos from "../support/page_objects/pagina-produtos";
 
 context('Exercicio - Testes End-to-end - Fluxo de pedido', () => {
   /*  Como cliente 
@@ -14,7 +15,17 @@ context('Exercicio - Testes End-to-end - Fluxo de pedido', () => {
   });
 
   it('Deve fazer um pedido na loja Ebac Shop de ponta a ponta', () => {
-      //TODO: Coloque todo o fluxo de teste aqui, considerando as boas práticas e otimizações
+    let qtd = 0
+    cy.fixture('produtos').then(dados => {
+        paginaProdutos.escolherProduto([qtd])
+        paginaProdutos.addProdutoCarrinho(
+            dados[qtd].cor,
+            dados[qtd].tamanho,
+            dados[qtd].quantidade)
+    })
+    cy.get('.woocommerce-message').should('contain', ' foram adicionados no seu carrinho.')
+    
+    
       
   });
 

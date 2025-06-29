@@ -19,13 +19,15 @@ context('Exercicio - Testes End-to-end - Fluxo de pedido', () => {
     cy.fixture('produtos').then(dados => {
         paginaProdutos.escolherProduto([qtd])
         paginaProdutos.addProdutoCarrinho(
-            dados[qtd].cor,
             dados[qtd].tamanho,
+            dados[qtd].cor,
             dados[qtd].quantidade)
     })
     cy.get('.woocommerce-message').should('contain', ' foram adicionados no seu carrinho.')
-    
-    
+    cy.get('.woocommerce-message > .button').click()
+    cy.get('.checkout-button').click()
+    paginaProdutos.formulario()
+    cy.get('.woocommerce-notice').should('contain', 'Obrigado. Seu pedido foi recebido.')
       
   });
 
